@@ -9,17 +9,37 @@
 import UIKit
 
 class ViewController: UIViewController {
+    @IBOutlet private weak var displayBox: UILabel!
+    var inthemiddleoftyping = false
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+    @IBAction private func touchedDigit(sender: UIButton) {
+        let digit = sender.currentTitle!
+        if inthemiddleoftyping {
+            let tempvar = displayBox!.text!
+            displayBox.text! = tempvar + digit
+        }
+        else{displayBox.text! = digit}
+        inthemiddleoftyping = true
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    @IBAction private func ClearButton(sender: UIButton) {
+        if (((displayBox.text!) != "")&&((displayBox.text!) != "0")){
+            displayBox.text!.removeAtIndex(displayBox.text!.endIndex.predecessor())}
+        else {displayBox.text! = "0"}
     }
-
-
+    
+    private var DisplayText: Double{
+        get{ return Double(displayBox.text!)!}
+        set {displayBox.text! = String(newValue)}
+    }
+    
+    private var brain = CalcBrain()
+    
+    @IBAction private func SpecialFunctions(sender: UIButton) {
+        if let mathSymbol = sender.currentTitle
+            {brain.performOperation(mathSymbol)}
+        DisplayText = brain.result
+        
+    }
 }
 
+ 
